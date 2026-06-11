@@ -1,206 +1,1142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkyGoal - Your Personal Flight Plan</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZeroToSolo | Premium Flight Training Pipeline Portal</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --navy-brand: #001e44;
+      --alaska-blue: #0072ac;
+      --safety-emerald: #00a86b;
+      --safety-emerald-soft: #e6f7f0;
+      --line-subtle: #dbe4ee;
+      --slate: #4a5568;
+      --light-bg: #f4f7fa;
+      --white: #ffffff;
+      
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+      
+      --transition-smooth: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      --radius-standard: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--light-bg);
+      color: var(--slate);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    h1, h2, h3, h4, h5 {
+      color: var(--navy-brand);
+      font-weight: 700;
+      line-height: 1.15;
+    }
+
+    .toast-notification {
+      position: fixed;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--navy-brand);
+      color: var(--white);
+      border: 1.5px solid var(--alaska-blue);
+      border-radius: var(--radius-standard);
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 10px 30px rgba(0, 31, 68, 0.15);
+      z-index: 2500;
+      transition: top var(--transition-smooth);
+      font-weight: 500;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .toast-notification.show {
+      top: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.8rem 1.6rem;
+      border-radius: var(--radius-standard);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--navy-brand);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--alaska-blue);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 1.5px solid var(--line-subtle);
+      color: var(--navy-brand);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--light-bg);
+      border-color: var(--navy-brand);
+    }
+
+    header {
+      background-color: var(--white);
+      border-bottom: 1px solid var(--line-subtle);
+      box-shadow: 0 2px 12px rgba(0, 31, 68, 0.02);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 76px;
+    }
+
+    .logo-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .logo-delta {
+      width: 24px;
+      height: 24px;
+      background-color: var(--alaska-blue);
+      clip-path: polygon(50% 0%, 0% 100%, 50% 80%, 100% 100%);
+    }
+
+    .logo-text {
+      font-family: var(--font-display);
+      font-size: 2.1rem;
+      letter-spacing: 0.5px;
+      color: var(--navy-brand);
+      line-height: 1;
+    }
+
+    .logo-text span {
+      color: var(--safety-emerald);
+    }
+
+    .utility-nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .profile-trigger-btn {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--navy-brand);
+      background-color: transparent;
+      border: 1.5px solid var(--line-subtle);
+      border-radius: var(--radius-standard);
+      padding: 0.55rem 1.2rem;
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+    }
+
+    .profile-trigger-btn:hover {
+      border-color: var(--navy-brand);
+      background-color: var(--light-bg);
+    }
+
+    .hero-section {
+      background-color: var(--navy-brand);
+      color: var(--white);
+      padding: 5rem 0;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    @media (max-width: 992px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero-content h1 {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      color: var(--white);
+      margin-bottom: 1rem;
+      letter-spacing: 1px;
+    }
+
+    .hero-content p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+    }
+
+    .hero-image {
+      border-radius: var(--radius-standard);
+      overflow: hidden;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+      height: 400px;
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .form-section {
+      background: var(--white);
+      padding: 4rem 0;
+    }
+
+    .form-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .form-container h2 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-container > p {
+      text-align: center;
+      color: var(--slate);
+      margin-bottom: 2.5rem;
+      font-size: 1.05rem;
+    }
+
+    .form-group {
+      margin-bottom: 2rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 700;
+      color: var(--navy-brand);
+      margin-bottom: 0.75rem;
+    }
+
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .option-card {
+      border: 1.5px solid var(--line-subtle);
+      border-radius: var(--radius-standard);
+      padding: 1.25rem;
+      cursor: pointer;
+      background-color: var(--white);
+      transition: all var(--transition-smooth);
+      position: relative;
+    }
+
+    .option-card input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .option-card:hover {
+      border-color: var(--alaska-blue);
+      background-color: var(--light-bg);
+    }
+
+    .option-card.selected {
+      border-color: var(--safety-emerald);
+      background-color: var(--safety-emerald-soft);
+    }
+
+    .option-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--navy-brand);
+      margin-bottom: 0.35rem;
+    }
+
+    .option-description {
+      font-size: 0.8rem;
+      color: var(--slate);
+      line-height: 1.4;
+    }
+
+    .input-box {
+      border: 1.5px solid var(--line-subtle);
+      border-radius: var(--radius-standard);
+      padding: 0.9rem 1.1rem;
+      font-size: 1rem;
+      width: 100%;
+      transition: border-color var(--transition-smooth);
+    }
+
+    .input-box:focus {
+      outline: none;
+      border-color: var(--alaska-blue);
+      box-shadow: 0 0 0 3px rgba(0, 114, 172, 0.15);
+    }
+
+    .form-actions {
+      margin-top: 2.5rem;
+    }
+
+    .form-actions button {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1rem;
+    }
+
+    .results-section {
+      background: var(--white);
+      padding: 4rem 0;
+      display: none;
+    }
+
+    .results-section.active {
+      display: block;
+    }
+
+    .clearance-banner {
+      background-color: var(--navy-brand);
+      color: var(--white);
+      border-radius: var(--radius-standard);
+      padding: 1.5rem 2rem;
+      margin-bottom: 2.5rem;
+      border-left: 5px solid var(--safety-emerald);
+    }
+
+    .clearance-title {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--safety-emerald);
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+    }
+
+    .clearance-data {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .floating-card {
+      background-color: var(--white);
+      border: 1px solid var(--line-subtle);
+      border-radius: var(--radius-standard);
+      box-shadow: 0 10px 30px rgba(0, 31, 68, 0.06);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .progress-label {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--navy-brand);
+    }
+
+    .progress-compliance {
+      font-family: var(--font-mono);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--safety-emerald);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 12px;
+      background-color: var(--line-subtle);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background-color: var(--safety-emerald);
+      transition: width var(--transition-smooth);
+    }
+
+    .phases-layout {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .phase-column {
+      background-color: var(--white);
+      border: 1px solid var(--line-subtle);
+      border-radius: var(--radius-standard);
+      padding: 2rem;
+    }
+
+    .phase-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--line-subtle);
+      padding-bottom: 0.5rem;
+    }
+
+    .phase-num {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--slate);
+    }
+
+    .phase-title {
+      font-weight: 700;
+      color: var(--navy-brand);
+    }
+
+    .checklist {
+      list-style: none;
+    }
+
+    .checklist-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      cursor: pointer;
+      user-select: none;
+      margin-bottom: 1rem;
+    }
+
+    .checklist-row input[type="checkbox"] {
+      margin-top: 0.25rem;
+      accent-color: var(--safety-emerald);
+      width: 1.1rem;
+      height: 1.1rem;
+      cursor: pointer;
+    }
+
+    .checklist-text {
+      font-size: 0.95rem;
+      color: var(--navy-brand);
+      font-weight: 500;
+      line-height: 1.4;
+      transition: all var(--transition-smooth);
+    }
+
+    .checklist-row input[type="checkbox"]:checked + .checklist-text {
+      color: var(--slate);
+      opacity: 0.45;
+      text-decoration: line-through;
+    }
+
+    .cost-section {
+      background: linear-gradient(135deg, var(--light-bg) 0%, var(--white) 100%);
+      border: 1px solid var(--line-subtle);
+      border-radius: var(--radius-standard);
+      padding: 2.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .cost-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    @media (max-width: 768px) {
+      .cost-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .cost-receipt {
+      background: var(--white);
+      border: 1px solid var(--line-subtle);
+      border-radius: var(--radius-standard);
+      padding: 2rem;
+    }
+
+    .receipt-header {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      color: var(--alaska-blue);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+    }
+
+    .receipt-total {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      color: var(--safety-emerald);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.95rem;
+      color: var(--slate);
+      margin-bottom: 0.75rem;
+    }
+
+    .receipt-row span:last-child {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--navy-brand);
+    }
+
+    .divider {
+      border-top: 1px dashed var(--line-subtle);
+      margin: 1rem 0;
+    }
+
+    .signup-section {
+      background: linear-gradient(135deg, var(--navy-brand) 0%, #000a1f 100%);
+      color: var(--white);
+      padding: 4rem 0;
+      display: none;
+    }
+
+    .signup-section.active {
+      display: block;
+    }
+
+    .signup-content {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .signup-content h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--white);
+    }
+
+    .signup-content p {
+      font-size: 1.1rem;
+      opacity: 0.95;
+    }
+
+    .signup-form {
+      max-width: 500px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 2rem;
+      border-radius: var(--radius-standard);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+
+    .signup-form .form-group {
+      text-align: left;
+      margin-bottom: 1.5rem;
+    }
+
+    .signup-form label {
+      color: var(--white) !important;
+      font-size: 0.9rem;
+    }
+
+    .signup-form input {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: var(--white);
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .signup-form input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .signup-form input:focus {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-color: var(--alaska-blue) !important;
+    }
+
+    .signup-form .btn {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    .signup-note {
+      font-size: 0.85rem;
+      margin-top: 1rem;
+      opacity: 0.85;
+    }
+
+    footer {
+      background-color: var(--navy-brand);
+      color: var(--white);
+      padding: 3rem 0;
+      text-align: center;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .footer-logo-text {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+    }
+
+    .footer-copy {
+      font-size: 0.85rem;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 768px) {
+      .hero-content h1 {
+        font-size: 2rem;
+      }
+      .form-container h2 {
+        font-size: 1.8rem;
+      }
+      .cost-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">✈️ SkyGoal</div>
-            <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#contact">Contact</a>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Hero Section with Image -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Your Personal Flight Plan</h1>
-            <p>Reach your goals with a personalized plan tailored just for you</p>
-        </div>
-        <div class="hero-image">
-            <svg viewBox="0 0 800 400" class="plane-svg">
-                <!-- Sky gradient background -->
-                <defs>
-                    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#E0F6FF;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-                <rect width="800" height="400" fill="url(#skyGradient)"/>
-                
-                <!-- Clouds -->
-                <ellipse cx="100" cy="80" rx="40" ry="25" fill="white" opacity="0.8"/>
-                <ellipse cx="140" cy="85" rx="35" ry="20" fill="white" opacity="0.8"/>
-                <ellipse cx="600" cy="120" rx="50" ry="30" fill="white" opacity="0.7"/>
-                <ellipse cx="650" cy="130" rx="40" ry="25" fill="white" opacity="0.7"/>
-                
-                <!-- Animated Plane -->
-                <g class="plane" id="animatedPlane">
-                    <!-- Fuselage -->
-                    <ellipse cx="400" cy="200" rx="60" ry="25" fill="#0066CC"/>
-                    <!-- Cockpit -->
-                    <circle cx="445" cy="195" r="15" fill="#FFD700"/>
-                    <!-- Left Wing -->
-                    <ellipse cx="380" cy="200" rx="80" ry="20" fill="#0052A3"/>
-                    <!-- Right Wing -->
-                    <ellipse cx="420" cy="200" rx="80" ry="20" fill="#0052A3"/>
-                    <!-- Tail -->
-                    <polygon points="340,195 320,180 320,220" fill="#0066CC"/>
-                    <!-- Landing Gear -->
-                    <circle cx="380" cy="230" r="8" fill="#333"/>
-                    <circle cx="420" cy="230" r="8" fill="#333"/>
-                </g>
-                
-                <!-- Mountains in background -->
-                <polygon points="0,350 150,200 300,350" fill="#8B7355" opacity="0.6"/>
-                <polygon points="500,350 650,150 800,350" fill="#A0826D" opacity="0.5"/>
-            </svg>
-        </div>
-    </section>
+  <div id="toastNotification" class="toast-notification">
+    <span id="toastIcon">🔑</span>
+    <span id="toastMsg">Welcome to ZeroToSolo</span>
+  </div>
 
-    <!-- Info Form Section -->
-    <section id="form-section" class="form-section">
-        <div class="form-container">
-            <h2>Get Started</h2>
-            <p>Tell us about yourself and your goals</p>
-            
-            <form id="goalForm" class="goal-form">
-                <div class="form-group">
-                    <label for="zipcode">Zip Code</label>
-                    <input type="text" id="zipcode" name="zipcode" placeholder="e.g., 90210" required maxlength="5" pattern="[0-9]{5}">
-                </div>
-
-                <div class="form-group">
-                    <label for="age">Age</label>
-                    <input type="number" id="age" name="age" placeholder="e.g., 25" min="13" max="120" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="goal">Your Goal</label>
-                    <textarea id="goal" name="goal" placeholder="What do you want to achieve?" rows="4" required></textarea>
-                </div>
-
-                <button type="button" id="signupBtn" class="btn-primary">Sign Up / Login</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- Modal for Auth -->
-    <div id="authModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <div class="auth-container">
-                <div class="auth-tabs">
-                    <button class="tab-btn active" data-tab="signup">Sign Up</button>
-                    <button class="tab-btn" data-tab="login">Login</button>
-                </div>
-
-                <!-- Sign Up Form -->
-                <div id="signup" class="tab-content active">
-                    <h3>Create Account</h3>
-                    <form id="signupForm">
-                        <div class="form-group">
-                            <label for="signupEmail">Email</label>
-                            <input type="email" id="signupEmail" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="signupPassword">Password</label>
-                            <input type="password" id="signupPassword" name="password" required minlength="6">
-                        </div>
-                        <button type="submit" class="btn-primary">Create Account</button>
-                    </form>
-                </div>
-
-                <!-- Login Form -->
-                <div id="login" class="tab-content">
-                    <h3>Login to Your Account</h3>
-                    <form id="loginForm">
-                        <div class="form-group">
-                            <label for="loginEmail">Email</label>
-                            <input type="email" id="loginEmail" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="loginPassword">Password</label>
-                            <input type="password" id="loginPassword" name="password" required>
-                        </div>
-                        <button type="submit" class="btn-primary">Login</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+  <header>
+    <div class="container nav-container">
+      <a href="#" class="logo-wrapper" onclick="resetPage(); return false;">
+        <div class="logo-delta"></div>
+        <div class="logo-text">ZERO<span>TO</span>SOLO</div>
+      </a>
+      <div class="utility-nav">
+        <button class="profile-trigger-btn" id="navProfileBtn" onclick="scrollToSignup()">Save Plan & Sign Up</button>
+      </div>
     </div>
+  </header>
 
-    <!-- Loading Screen -->
-    <div id="loadingScreen" class="loading-screen hidden">
-        <div class="loading-container">
-            <svg class="flying-plane" viewBox="0 0 800 400">
-                <defs>
-                    <linearGradient id="skyGradientLoading" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#16213e;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-                <rect width="800" height="400" fill="url(#skyGradientLoading)"/>
-                
-                <!-- Stars -->
-                <circle cx="100" cy="50" r="1.5" fill="white" opacity="0.8"/>
-                <circle cx="200" cy="40" r="1" fill="white" opacity="0.6"/>
-                <circle cx="350" cy="60" r="1.5" fill="white" opacity="0.7"/>
-                <circle cx="500" cy="45" r="1" fill="white" opacity="0.8"/>
-                <circle cx="650" cy="55" r="1.5" fill="white" opacity="0.7"/>
-                <circle cx="750" cy="50" r="1" fill="white" opacity="0.6"/>
-                
-                <!-- Flying Plane -->
-                <g class="flying-plane-group">
-                    <ellipse cx="400" cy="200" rx="60" ry="25" fill="#FFD700"/>
-                    <circle cx="445" cy="195" r="15" fill="#FF6B6B"/>
-                    <ellipse cx="380" cy="200" rx="80" ry="20" fill="#FFA500"/>
-                    <ellipse cx="420" cy="200" rx="80" ry="20" fill="#FFA500"/>
-                    <polygon points="340,195 320,180 320,220" fill="#FFD700"/>
-                    <circle cx="380" cy="230" r="8" fill="#333"/>
-                    <circle cx="420" cy="230" r="8" fill="#333"/>
-                    <!-- Trail effect -->
-                    <line x1="340" y1="200" x2="300" y2="205" stroke="#FFD700" stroke-width="3" opacity="0.5"/>
-                </g>
-            </svg>
-            <h2>Generating Your Personal Flight Plan</h2>
-            <p id="loadingText">Calculating the best route for your journey...</p>
-            <div class="loading-bar">
-                <div class="loading-progress"></div>
-            </div>
-        </div>
+  <section class="hero-section">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <h1>Your Personal Flight Training Pipeline</h1>
+        <p>Get your customized roadmap to becoming a Private Pilot. Input your goals and let us build your perfect training plan.</p>
+      </div>
+      <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=600&h=400&fit=crop" alt="Aircraft cockpit">
+      </div>
     </div>
+  </section>
 
-    <!-- Results Section -->
-    <section id="resultsSection" class="results-section hidden">
-        <div class="results-container">
-            <h2>Your Personalized Flight Plan</h2>
-            <div class="user-info-card">
-                <h3>Your Profile</h3>
-                <p><strong>Location:</strong> <span id="resultZip"></span></p>
-                <p><strong>Age:</strong> <span id="resultAge"></span></p>
-                <p><strong>Goal:</strong> <span id="resultGoal"></span></p>
-            </div>
+  <section class="form-section" id="formSection">
+    <div class="container form-container">
+      <h2>Calibrate Your Training Parameters</h2>
+      <p>Answer a few quick questions to generate your personalized flight training plan</p>
 
-            <div id="planContent" class="plan-content">
-                <!-- Generated plan will appear here -->
-            </div>
-
-            <div class="action-buttons">
-                <button id="restartBtn" class="btn-secondary">Create Another Plan</button>
-                <button id="downloadBtn" class="btn-primary">Download Plan</button>
-            </div>
+      <form id="calibrationForm" onsubmit="handleFormSubmit(event)">
+        
+        <div class="form-group">
+          <label>1. What is your training budget?</label>
+          <div class="option-grid">
+            <label class="option-card" onclick="selectCard(this)">
+              <input type="radio" name="budget" value="low" required>
+              <div class="option-title">Under $1,500</div>
+              <div class="option-description">Focus on ground school and sim training</div>
+            </label>
+            <label class="option-card" onclick="selectCard(this)">
+              <input type="radio" name="budget" value="mid">
+              <div class="option-title">$1,500 - $6,000</div>
+              <div class="option-description">Blended ground + flight training</div>
+            </label>
+            <label class="option-card" onclick="selectCard(this)">
+              <input type="radio" name="budget" value="high">
+              <div class="option-title">$6,000+</div>
+              <div class="option-description">Accelerated full flight training</div>
+            </label>
+          </div>
         </div>
-    </section>
 
-    <script src="script.js"></script>
+        <div class="form-group">
+          <label>2. Weekly flight availability?</label>
+          <div class="option-grid">
+            <label class="option-card" onclick="selectCard(this)">
+              <input type="radio" name="availability" value="high" required>
+              <div class="option-title">3+ Days/Week</div>
+              <div class="option-description">Fast-track intensive training</div>
+            </label>
+            <label class="option-card" onclick="selectCard(this)">
+              <input type="radio" name="availability" value="balanced">
+              <div class="option-title">1-2 Days/Week</div>
+              <div class="option-description">Steady progress alongside work</div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>3. Your primary flight goal?</label>
+          <div class="option-grid">
+            <label class="option-card" onclick="selectCard(this)">
+              <input type="radio" name="goal" value="recreational" required>
+              <div class="option-title">Recreational Pilot</div>
+              <div class="option-description">Personal flying & adventures</div>
+            </label>
+            <label class="option-card" onclick="selectCard(this)">
+              <input type="radio" name="goal" value="commercial">
+              <div class="option-title">Commercial Track</div>
+              <div class="option-description">Build toward airline career</div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>4. Preferred learning style?</label>
+          <div class="option-grid">
+            <label class="option-card" onclick="selectCard(this)">
+              <input type="radio" name="learning" value="visual" required>
+              <div class="option-title">Visual & Interactive</div>
+              <div class="option-description">Diagrams, sims & spatial learning</div>
+            </label>
+            <label class="option-card" onclick="selectCard(this)">
+              <input type="radio" name="learning" value="analytical">
+              <div class="option-title">Text & Analytical</div>
+              <div class="option-description">FAA handbooks & equations</div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>5. Your zip code</label>
+          <input type="text" id="zipCode" class="input-box" placeholder="e.g. 98101" pattern="[0-9]{5}" required>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem;">Generate My Flight Plan</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="results-section" id="resultsSection">
+    <div class="container">
+      
+      <div class="clearance-banner">
+        <div class="clearance-title">CURRENT PILOT CLEARANCE STATUS</div>
+        <div class="clearance-data" id="clearanceBannerText">LOADING...</div>
+      </div>
+
+      <div class="floating-card">
+        <div class="progress-meta">
+          <span class="progress-label">FAA COMPLIANCE OBJECTIVES</span>
+          <span class="progress-compliance" id="progressPctText">0% COMPLETE</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressTrackerBar"></div>
+        </div>
+      </div>
+
+      <h3 style="margin-bottom: 2rem; font-size: 1.8rem;">Your Training Phases</h3>
+      <div class="phases-layout">
+        
+        <div class="phase-column">
+          <div class="phase-header">
+            <span class="phase-num">PHASE 01</span>
+            <span class="phase-title">Ground School</span>
+          </div>
+          <ul class="checklist">
+            <li>
+              <label class="checklist-row">
+                <input type="checkbox" class="milestone-chk" id="m1">
+                <span class="checklist-text">Obtain Third-Class Medical</span>
+              </label>
+            </li>
+            <li>
+              <label class="checklist-row">
+                <input type="checkbox" class="milestone-chk" id="m2">
+                <span class="checklist-text">Pass Written Exam (87%+)</span>
+              </label>
+            </li>
+            <li>
+              <label class="checklist-row">
+                <input type="checkbox" class="milestone-chk" id="m3">
+                <span class="checklist-text">Ground School Complete</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+
+        <div class="phase-column">
+          <div class="phase-header">
+            <span class="phase-num">PHASE 02</span>
+            <span class="phase-title">Solo Training</span>
+          </div>
+          <ul class="checklist">
+            <li>
+              <label class="checklist-row">
+                <input type="checkbox" class="milestone-chk" id="m4">
+                <span class="checklist-text">First Dual Flight Hour</span>
+              </label>
+            </li>
+            <li>
+              <label class="checklist-row">
+                <input type="checkbox" class="milestone-chk" id="m5">
+                <span class="checklist-text">Master Landing Patterns</span>
+              </label>
+            </li>
+            <li>
+              <label class="checklist-row">
+                <input type="checkbox" class="milestone-chk" id="m6">
+                <span class="checklist-text">First Solo Flight</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+
+        <div class="phase-column">
+          <div class="phase-header">
+            <span class="phase-num">PHASE 03</span>
+            <span class="phase-title">Checkride Prep</span>
+          </div>
+          <ul class="checklist">
+            <li>
+              <label class="checklist-row">
+                <input type="checkbox" class="milestone-chk" id="m7">
+                <span class="checklist-text">Cross-Country Flights</span>
+              </label>
+            </li>
+            <li>
+              <label class="checklist-row">
+                <input type="checkbox" class="milestone-chk" id="m8">
+                <span class="checklist-text">Night & Instrument Prep</span>
+              </label>
+            </li>
+            <li>
+              <label class="checklist-row">
+                <input type="checkbox" class="milestone-chk" id="m9">
+                <span class="checklist-text">Pass Practical Test</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="cost-section">
+        <h3 style="margin-bottom: 2rem; color: var(--navy-brand);">Estimated Training Cost</h3>
+        <div class="cost-grid">
+          
+          <div>
+            <div class="form-group">
+              <label>Aircraft Rental Rate (Wet)</label>
+              <input type="range" id="planeRate" class="input-box" style="width: 100%; max-width: 100%; height: 8px; padding: 0; cursor: pointer;" min="100" max="300" step="10" value="150" oninput="calculateCost()">
+              <span style="font-weight: 700; color: var(--alaska-blue); display: block; margin-top: 0.5rem;" id="planeRateDisplay">$150/hr</span>
+            </div>
+
+            <div class="form-group">
+              <label>Flight Instructor Rate</label>
+              <input type="range" id="cfiRate" class="input-box" style="width: 100%; max-width: 100%; height: 8px; padding: 0; cursor: pointer;" min="40" max="120" step="5" value="65" oninput="calculateCost()">
+              <span style="font-weight: 700; color: var(--alaska-blue); display: block; margin-top: 0.5rem;" id="cfiRateDisplay">$65/hr</span>
+            </div>
+          </div>
+
+          <div class="cost-receipt">
+            <div class="receipt-header">PIPELINE COST BREAKDOWN</div>
+            <div class="receipt-total" id="receiptTotal">$8,600</div>
+
+            <div class="receipt-row">
+              <span>Dual Lessons (20 hrs)</span>
+              <span id="dualCost">$4,300</span>
+            </div>
+            <div class="receipt-row">
+              <span>Solo Training (20 hrs)</span>
+              <span id="soloCost">$3,000</span>
+            </div>
+            <div class="receipt-row">
+              <span>FAA Exam & Fees</span>
+              <span>$1,300</span>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="receipt-row" style="font-weight: 700;">
+              <span style="color: var(--navy-brand);">TOTAL INVESTMENT</span>
+              <span style="color: var(--safety-emerald); font-size: 1.25rem;" id="totalInvestment">$8,600</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="signup-section" id="signupSection">
+    <div class="container">
+      <div class="signup-content">
+        <h3>Save Your Flight Plan</h3>
+        <p>Create an account to save your personalized training plan, track progress, and sync across all devices</p>
+
+        <form class="signup-form" onsubmit="handleSignup(event)">
+          <div class="form-group">
+            <label>Pilot Callsign / Name</label>
+            <input type="text" id="signupCallsign" class="input-box" placeholder="e.g. Maverick" required>
+          </div>
+
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="signupEmail" class="input-box" placeholder="pilot@zerotosolo.com" required>
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="signupPassword" class="input-box" placeholder="••••••••" minlength="6" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Create Account & Save Plan</button>
+
+          <p class="signup-note">Already have an account? <a href="#" onclick="showToastNotification('🔐 Sign in feature coming soon'); return false;" style="color: var(--safety-emerald); text-decoration: underline;">Sign In</a></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-logo">
+        <div class="logo-delta" style="width: 20px; height: 20px; background-color: var(--safety-emerald);"></div>
+        <div class="footer-logo-text">ZERO<span style="color: var(--safety-emerald);">TO</span>SOLO</div>
+      </div>
+      <p class="footer-copy">&copy; 2026 ZeroToSolo | Optimized Flight Training Pipeline</p>
+    </div>
+  </footer>
+
+  <script>
+    let formData = {};
+    let currentPilot = null;
+
+    function selectCard(element) {
+      const group = element.closest('.form-group');
+      const cards = group.querySelectorAll('.option-card');
+      cards.forEach(card => card.classList.remove('selected'));
+      element.classList.add('selected');
+      element.querySelector('input[type="radio"]').checked = true;
+    }
+
+    function handleFormSubmit(event) {
+      event.preventDefault();
+
+      const budget = document.querySelector('input[name="budget"]:checked')?.value;
+      const availability = document.querySelector('input[name="availability"]:checked')?.value;
+      const goal = document.querySelector('input[name="goal"]:checked')?.value;
+      const learning = document.querySelector('input[name="learning"]:checked')?.value;
+      const zipCode = document.getElementById('zipCode').value;
+
+      if (!budget || !availability || !goal || !learning || !zipCode) {
+        showToastNotification('⚠️ Please fill in all fields');
+        return;
+      }
+
+      formData = { budget, availability, goal, learning, zipCode };
+
+      const goalLabel = goal === 'recreational' ? 'RECREATIONAL PILOT' : 'COMMERCIAL TRACK';
+      const pedagogyLabel = learning === 'visual' ? 'VISUAL MATRIX' : 'ANALYTICAL MATRIX';
+      document.getElementById('clearanceBannerText').textContent = 
+        `CALLSIGN: PIC-${zipCode} | GOAL: ${goalLabel} | ZIP: ${zipCode} | PEDAGOGY: ${pedagogyLabel}`;
+
+      document.getElementById('formSection').style.display = 'none';
+      document.getElementById('resultsSection').classList.add('active');
+      document.getElementById('signupSection').classList.add('active');
+
+      document.getElementById('m1').checked = true;
+      document.getElementById('m2').checked = true;
+      document.getElementById('m3').checked = true;
+      document.getElementById('m4').checked = true;
+      updateProgress();
+      calculateCost();
+
+      showToastNotification('✈️ Your flight plan is ready!');
+      window.scrollTo(0, 0);
+    }
+
+    function updateProgress() {
+      const checkboxes = document.querySelectorAll('.milestone-chk');
+      const checked = Array.from(checkboxes).filter(c => c.checked).length;
+      const percentage = Math.round((checked / checkboxes.length) * 100);
+
+      document.getElementById('progressTrackerBar').style.width = percentage + '%';
+      document.getElementById('progressPctText').textContent = percentage + '% COMPLETE';
+    }
+
+    function calculateCost() {
+      const planeRate = parseFloat(document.getElementById('planeRate').value);
+      const cfiRate = parseFloat(document.getElementById('cfiRate').value);
+
+      document.getElementById('planeRateDisplay').textContent = `$${planeRate}/hr`;
+      document.getElementById('cfiRateDisplay').textContent = `$${cfiRate}/hr`;
+
+      const dualTotal = (planeRate + cfiRate) * 20;
+      const soloTotal = planeRate * 20;
+      const total = dualTotal + soloTotal + 1300;
+
+      document.getElementById('dualCost').textContent = `$${dualTotal.toLocaleString()}`;
+      document.getElementById('soloCost').textContent = `$${soloTotal.toLocaleString()}`;
+      document.getElementById('receiptTotal').textContent = `$${total.toLocaleString()}`;
+      document.getElementById('totalInvestment').textContent = `$${total.toLocaleString()}`;
+    }
+
+    function scrollToSignup() {
+      if (!document.getElementById('resultsSection').classList.contains('active')) {
+        showToastNotification('📋 Generate your plan first');
+      } else {
+        document.getElementById('signupSection').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function handleSignup(event) {
+      event.preventDefault();
+
+      const callsign = document.getElementById('signupCallsign').value;
+      const email = document.getElementById('signupEmail').value.toLowerCase();
+      const password = document.getElementById('signupPassword').value;
+
+      if (!callsign || !email || !password) {
+        showToastNotification('⚠️ Please fill in all fields');
+        return;
+      }
+
+      const userProfile = {
+        callsign,
+        email,
+        password,
+        plan: formData,
+        milestones: {},
+        createdAt: new Date().toISOString()
+      };
+
+      document.querySelectorAll('.milestone-chk').forEach(chk => {
+        userProfile.milestones[chk.id] = chk.checked;
+      });
+
+      localStorage.setItem(`zerotosolo_${email}`, JSON.stringify(userProfile));
+      localStorage.setItem('zerotosolo_active', email);
+
+      currentPilot = email;
+      document.getElementById('navProfileBtn').textContent = `Signed In: ${callsign}`;
+      document.getElementById('navProfileBtn').onclick = () => signOut();
+
+      showToastNotification(`✈️ Welcome, ${callsign}! Plan saved successfully.`);
+      setTimeout(() => window.scrollTo(0, 0), 500);
+    }
+
+    function signOut() {
+      localStorage.removeItem('zerotosolo_active');
+      currentPilot = null;
+      document.getElementById('navProfileBtn').textContent = 'Save Plan & Sign Up';
+      document.getElementById('navProfileBtn').onclick = () => scrollToSignup();
+      showToastNotification('👋 Signed out successfully');
+      resetPage();
+    }
+
+    function resetPage() {
+      document.getElementById('formSection').style.display = 'block';
+      document.getElementById('resultsSection').classList.remove('active');
+      document.getElementById('signupSection').classList.remove('active');
+      document.getElementById('calibrationForm').reset();
+      document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+      window.scrollTo(0, 0);
+    }
+
+    function showToastNotification(message) {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastMsg').textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const active = localStorage.getItem('zerotosolo_active');
+      if (active) {
+        const profile = JSON.parse(localStorage.getItem(`zerotosolo_${active}`));
+        if (profile) {
+          currentPilot = active;
+          document.getElementById('navProfileBtn').textContent = `Signed In: ${profile.callsign}`;
+          document.getElementById('navProfileBtn').onclick = () => signOut();
+        }
+      }
+    });
+
+    document.addEventListener('change', (e) => {
+      if (e.target.classList.contains('milestone-chk')) {
+        updateProgress();
+        if (currentPilot) {
+          const profile = JSON.parse(localStorage.getItem(`zerotosolo_${currentPilot}`));
+          profile.milestones[e.target.id] = e.target.checked;
+          localStorage.setItem(`zerotosolo_${currentPilot}`, JSON.stringify(profile));
+        }
+      }
+    });
+  </script>
+
 </body>
 </html>
